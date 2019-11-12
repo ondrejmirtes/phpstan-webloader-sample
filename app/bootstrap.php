@@ -11,6 +11,9 @@ $configurator->enableTracy(__DIR__ . '/../log');
 
 $configurator->setTimeZone('Europe/Prague');
 $configurator->setTempDirectory(__DIR__ . '/../temp');
+$configurator->addParameters([
+	'wwwDir' => realpath(__DIR__ . '/../www'),
+]);
 
 @mkdir(__DIR__ . '/../temp/sessions');
 
