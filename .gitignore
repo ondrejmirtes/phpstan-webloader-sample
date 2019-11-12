@@ -1,0 +1,10 @@
+log/*
+temp/*
+!.gitignore
+!.htaccess
+!web.config
+app/config/config.local.neon
+app/config/config.local.parameters.neon
+tests/**/output
+vendor/*
+/composer.lock

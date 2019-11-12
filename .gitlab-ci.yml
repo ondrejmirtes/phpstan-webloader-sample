@@ -1,0 +1,38 @@
+variables:
+    GIT_DEPTH: "1"
+    # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
+    MYSQL_DATABASE: is-sandbox
+    MYSQL_ROOT_PASSWORD: mysql
+
+stages:
+    - test
+
+.test_template: &test_template
+    stage: test
+    services:
+        - mariadb:10.1
+    before_script:
+        - composer config -g github-oauth.github.com $OAUTH_ACCESS_TOKEN
+        - composer install --no-interaction --no-progress --no-suggest --optimize-autoloader
+    script:
+        - bash ci/create_neons_for_tests.sh
+        - php bin/console migrations:migrate -n
+        - php bin/console doctrine:fixtures:load -n
+        - bash tests/run-static-analysis.sh
+        - composer test
+
+test:7.2:
+    image: webnazakazku/docker-php-build:7.2
+    tags:
+        - php72
+    <<: *test_template
+
+test:7.3:
+    image: webnazakazku/docker-php-build:7.3
+    tags:
+        - php73
+    <<: *test_template
+
+cache:
+    paths:
+        - vendor

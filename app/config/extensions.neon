@@ -1,0 +1,58 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
+
+extensions:
+	# Console
+	console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
+
+	# DBAL
+	dbal: Nettrine\DBAL\DI\DbalExtension
+	dbal.console: Nettrine\DBAL\DI\DbalConsoleExtension
+
+	# ORM
+	orm: Nettrine\ORM\DI\OrmExtension
+	orm.cache: Nettrine\ORM\DI\OrmCacheExtension
+	orm.console: Nettrine\ORM\DI\OrmConsoleExtension
+	orm.annotations: Nettrine\ORM\DI\OrmAnnotationsExtension
+
+	migrations: Nettrine\Migrations\DI\MigrationsExtension
+
+	webloader: WebLoader\Nette\Extension
+
+console:
+	name: test
+	catchExceptions: true
+	url: %consoleUrl%
+
+dbal:
+	debug: %debugMode%
+	connection:
+		host: %dbHost%
+		driver: pdo_mysql
+		dbname: %dbName%
+		user: %dbUser%
+		password: %dbPassword%
+
+orm:
+	# Own em class
+	entityManagerDecoratorClass: App\Model\EntityManagerDecorator
+
+orm.annotations:
+	paths:
+		- app/model/entities
+	ignore: [] # ignored annotations
+
+migrations:
+	directory: %appDir%/../migrations
+
+webloader:
+	css:
+		default:
+			files:
+				- style.css
+	js:
+		default:
+			files:
+				- jquery.js
